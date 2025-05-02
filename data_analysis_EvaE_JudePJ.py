@@ -25,29 +25,24 @@ def month_num_to_str(num):
 
 def max_min_date(when,string):
     print(f"The maximum {string} where an attack occurred is {max(when)}, and the minimum is {min(when)}")
-
-<<<<<<< HEAD
-max_min_date([dog.date.day for dog in dogs], "day")
-max_min_date([dog.date.month for dog in dogs], "month")
-max_min_date([dog.date.year for dog in dogs], "year")
-
-
+    
 def latest_date(year,month,day):
-        print(f"The latest day where a dog attack occurred was on {max(year)}/{max(month)}/{max(day)}")
-
-latest_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2025],
-            [dog.date.day for dog in dogs if dog.date.month==3 and dog.date.year == 2025])
+    print(f"The latest day where a dog attack occurred was on {max(year)}/{max(month)}/{max(day)}")
 
 def first_date(year,month,day):
-        print(f"The first day where a dog attack occurred was on {min(year)}/{min(month)}/{min(day)}")
+    print(f"The first day where a dog attack occurred was on {min(year)}/{min(month)}/{min(day)}")
 
-first_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2017],
-            [dog.date.day for dog in dogs if min(dog.date.month) and dog.date.year = 2017])
-
+#<<<<<<< HEAD
 
 
-=======
->>>>>>> 0285ca986a9fd97b921808ed9a9f74df7cdc5865
+
+
+
+
+
+
+#=======
+#>>>>>>> 0285ca986a9fd97b921808ed9a9f74df7cdc5865
 '''
 EXAMPLES
 '''
@@ -133,7 +128,16 @@ def main():
 
     # Min maxes
     max_min_date([dog.date.day for dog in dogs], "day")
+    max_min_date([dog.date.month for dog in dogs], "month")
+    max_min_date([dog.date.year for dog in dogs], "year")
 
+    # First ever attack date  
+    first_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2017],
+            [dog.date.day for dog in dogs if dog.date.month == 2 and dog.date.year == 2017])
+    
+    #Latest attack date
+    latest_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2025],
+        [dog.date.day for dog in dogs if dog.date.month==3 and dog.date.year == 2025])
     pass
 main()
 
