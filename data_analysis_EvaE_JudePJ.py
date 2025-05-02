@@ -22,18 +22,23 @@ with open('Dogs Issued Dangerous Dog Orders.csv', newline='') as file: # Reads c
         dog = Dog(row)
         dogs.append(dog)
 
-# Accessing general info
-for dog in dogs:
-    print(dog.name) # Get all dog's names
-    print(dog.date.day) # Gets all dog's days of attack
 
-# Accessing specific dog info
-print(dogs[0].name) # Dog #1 is named chloe 
+'''
+EXAMPLES
+'''
+
+# # Accessing general info
+# for dog in dogs:
+#     print(dog.name) # Get all dog's names
+#     print(dog.date.day) # Gets all dog's days of attack
+
+# # Accessing specific dog info
+# print(dogs[0].name) # Dog #1 is named chloe 
 
 # Finding related info about specific dogs with certain characteristic
-for dog in dogs:
-    if dog.name.lower() == "pablo":
-        print(dog.bite) # There are two dogs named pablo and they both have SEVERE bites
+# for dog in dogs:
+#     if dog.name.lower() == "pablo":
+#         print(dog.bite) # There are two dogs named pablo and they both have SEVERE bites
 
 # Counting occurences of specific value
-print(len([dog for dog in dogs if dog.name.lower() == "zeus"])) # 6 dogs are named zeus
+# print(len([dog for dog in dogs if dog.name.lower() == "zeus"])) # 6 dogs are named zeus
