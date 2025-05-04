@@ -144,14 +144,16 @@ def main():
     latest_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2025],
         [dog.date.day for dog in dogs if dog.date.month==3 and dog.date.year == 2025])
     
-    # Average Length of words in sentence values per dog colour
+    # Total and average length of words in sentence values per dog colour
     length_values_colours = []
     for dog in dogs:
         word_count = len(dog.colours.split())
         length_values_colours.append(word_count)
-        average_of_words = sum(length_values_colours)/len(length_values_colours)
-    print(f"The average amount of words per dog colour value is {round(average_of_words, 2)}")
-    
+        number_words = len(length_values_colours)
+        average_of_words = sum(length_values_colours)/number_words
+
+    print(f"There are {number_words} total words in the dog's colour value, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
+
     
 
     
