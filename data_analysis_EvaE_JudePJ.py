@@ -31,7 +31,7 @@ def latest_date(year,month,day):
 
 def first_date(year,month,day):
     print(f"The first day where a dog attack occurred was on {min(year)}/{min(month)}/{min(day)}")
-
+    
 #<<<<<<< HEAD
 
 
@@ -48,7 +48,7 @@ EXAMPLES
 '''
 
 # # Accessing general info
-# for dog in dogs:
+#for dog in dogs:
 #     print(dog.name) # Get all dog's names
 #     print(dog.date.day) # Gets all dog's days of attack
 
@@ -62,6 +62,11 @@ EXAMPLES
 
 # Counting occurrences of specific value
 # print(len([dog for dog in dogs if dog.name.lower() == "zeus"])) # 6 dogs are named zeus
+
+#     for dog in dogs:
+#         word_length = len(dog.colours)
+#         answer.append(word_length)
+#         word_count = len(dog.colours.split())
 def main():
     '''
     EXTRACTION
@@ -135,9 +140,21 @@ def main():
     first_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2017],
             [dog.date.day for dog in dogs if dog.date.month == 2 and dog.date.year == 2017])
     
-    #Latest attack date
+    # Latest attack date
     latest_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2025],
         [dog.date.day for dog in dogs if dog.date.month==3 and dog.date.year == 2025])
+    
+    # Average Length of words in sentence values per dog colour
+    length_values_colours = []
+    for dog in dogs:
+        word_count = len(dog.colours.split())
+        length_values_colours.append(word_count)
+        average_of_words = sum(length_values_colours)/len(length_values_colours)
+    print(f"The average amount of words per dog colour value is {round(average_of_words, 2)}")
+    
+    
+
+    
     pass
 main()
 
