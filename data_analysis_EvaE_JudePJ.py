@@ -1,4 +1,5 @@
 from csv import reader
+from collections import Counter
 
 '''
 CLASS DEFINITIONS
@@ -154,7 +155,16 @@ def main():
 
     print(f"There are {number_words} total words in the dog's colour value, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
 
+    #Top Ten most common words
+    top_ten_words = list(dog.name for dog in dogs) + list(dog.colours for dog in dogs) + list(dog.ward_name for dog in dogs) + list(dog.ward_name for dog in dogs)
+    top_words_counter = Counter(top_ten_words)
+    print(top_words_counter)
+    #print(words)
+
     
+        #counter_numbers = Counter(dog.date.year)
+        #print(counter_numbers)
+    #print(f"Item count: [counter_words]")
 
     
     pass
