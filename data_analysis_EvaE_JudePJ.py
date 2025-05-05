@@ -13,10 +13,13 @@ class Date: # Contains date data for easier accessibility
     
 class Dog: # Contains dog data
     def __init__(self, info): # Takes important info from each row. We can modify later if we want to get different data from the file
+        self.code = info[1]
         self.name = info[2]
+        self.breed = info[3]
         self.colours = info[4]
         self.ward_name = info[6]
         self.bite = info[7]
+        self.loc = info[8]
         self.date = Date(info[9])
 '''
 UTILITY FUNCTIONS
@@ -28,11 +31,26 @@ def max_min_date(when,string):
     print(f"The maximum {string} where an attack occurred is {max(when)}, and the minimum is {min(when)}")
     
 def latest_date(year,month,day):
-    print(f"The most recent day where a dog attack occurred was on {max(year)}/{max(month)}/{max(day)}")
+    print(f"The most recent day where a dog attack occurred was on {year}/{month}/{day}")
 
 def first_date(year,month,day):
-    print(f"The first day where a dog attack occurred was on {min(year)}/{min(month)}/{min(day)}")
-    
+    print(f"The first day where a dog attack occurred was on {year}/{month}/{day}")
+
+def format_occurrence_tuple(tup):
+    return str(str(tup[0]) + ": found " + str(tup[1]) + " times")
+
+def format_top_three(top):
+    return f"{top[0][0].capitalize()}, at {top[0][1]} occurrences, {top[1][0].capitalize()}, at {top[1][1]} occurrences, and {top[2][0].capitalize()}, at {top[2][1]} occurrences."
+
+def split_values(value_list, s_char):
+    split_values = []
+    for values in value_list:
+        values = values.split(s_char)
+        for value in values:
+            split_values.append(value.strip())
+    return split_values
+
+
 #<<<<<<< HEAD
 
 
@@ -44,30 +62,7 @@ def first_date(year,month,day):
 
 #=======
 #>>>>>>> 0285ca986a9fd97b921808ed9a9f74df7cdc5865
-'''
-EXAMPLES
-'''
 
-# # Accessing general info
-#for dog in dogs:
-#     print(dog.name) # Get all dog's names
-#     print(dog.date.day) # Gets all dog's days of attack
-
-# # Accessing specific dog info
-# print(dogs[0].name) # Dog #1 is named chloe 
-
-# Finding related info about specific dogs with certain characteristic
-# for dog in dogs:
-#     if dog.name.lower() == "pablo":
-#         print(dog.bite) # There are two dogs named pablo and they both have SEVERE bites
-
-# Counting occurrences of specific value
-# print(len([dog for dog in dogs if dog.name.lower() == "zeus"])) # 6 dogs are named zeus
-
-#     for dog in dogs:
-#         word_length = len(dog.colours)
-#         answer.append(word_length)
-#         word_count = len(dog.colours.split())
 def main():
     '''
     EXTRACTION
@@ -82,21 +77,24 @@ def main():
     '''
     DATA ANALYSIS
     '''
+    # Collections of important info (dog_days isn't needed directly)
+    dog_months = [dog.date.month for dog in dogs]
+    dog_years = [dog.date.year for dog in dogs]
 
-    attacks_per_year = len(dogs)/(max([dog.date.year for dog in dogs]) - min([dog.date.year for dog in dogs]))
+    # Average attacks per year 
+    attacks_per_year = len(dogs)/(max(dog_years) - min(dog_years))
 
+    # Average attacks per month
     attacks_per_month = attacks_per_year / 12
 
     # Highest month/months of attacks
-    
     month_counter = Counter([(dog.date.year, dog.date.month) for dog in dogs]).most_common()
-    print(month_counter)
     month_threshold = month_counter[0][1]
     highest_months = [x[0] for x in month_counter if x[1] == month_threshold]
 
 
     # Highest year/years of attacks
-    year_counter = Counter([dog.date.year for dog in dogs]).most_common()
+    year_counter = Counter(dog_years).most_common()
     year_threshold = year_counter[0][1]
     highest_years = [str(x[0]) for x in year_counter if x[1] == year_threshold]
     h_years_str = " and ".join(highest_years)
@@ -106,33 +104,29 @@ def main():
     for dog in dogs:
         month_counts[dog.date.month - 1] += 1
     
-
-    # Average attacks per year
-    print(f"The average attacks per year is: {round(attacks_per_year, 2)}")
-    # Average attacks per month
-    print(f"The average attacks per month is: {round(attacks_per_month, 2)}")
-    # Highest month of attacks ever
-    print(f"The highest amount of dog attacks in a single month is {month_threshold}, which occurred in {month_num_to_str(highest_months[0][1])} {highest_months[0][0]}") # Did not want to both making this scalable because they aren't tied anyway
-    # Highest year of attacks
-    print(f"The highest amount of dog attacks in a single year is {year_threshold}, which was in {h_years_str}")
-    # Highest average attacks per month
-    print(f"The highest monthly average amount of dog attacks is in {month_num_to_str(month_counts.index(max(month_counts)))}, with an average of {round(max(month_counts)/12, 2)} attacks per year")
-    # Lowest average attacks per month
-    print(f"The lowest monthly average amount of dog attacks is in {month_num_to_str(month_counts.index(min(month_counts)))}, with an average of {round(min(month_counts)/12, 2)} attacks per year")
-
-    # Min maxes
-    max_min_date([dog.date.day for dog in dogs], "day")
-    max_min_date([dog.date.month for dog in dogs], "month")
-    max_min_date([dog.date.year for dog in dogs], "year")
-
-    # First ever attack date  
-    first_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2017],
-            [dog.date.day for dog in dogs if dog.date.month == 2 and dog.date.year == 2017])
+    # Split colour value to individual colours 
+    split_colours = split_values([dog.colours for dog in dogs], "/")
     
-    # Latest attack date
-    latest_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2025],
-        [dog.date.day for dog in dogs if dog.date.month==3 and dog.date.year == 2025])
-    
+    # Split breed value to individual breeds
+    split_breeds = split_values([dog.breed for dog in dogs], "/")
+
+    # These next ones have no real meaning but are required for the challenge portion
+
+    # Split loc value to words 
+    split_locs = split_values([dog.loc for dog in dogs], " ")
+
+    # Split bite value into words
+    split_bites = split_values([dog.bite for dog in dogs], " ")
+
+    #Top Ten most common words
+
+    top_ten_words = [dog.code for dog in dogs] + [dog.name for dog in dogs] + split_breeds + split_colours + [dog.ward_name for dog in dogs] + split_bites + split_locs
+    top_words_counter = Counter(top_ten_words).most_common()[:10]
+    top_words_formatted = []
+    for x in top_words_counter:
+        top_words_formatted.append(format_occurrence_tuple(x))
+    top_words_formatted = ", ".join(top_words_formatted)
+
     # Total and average length of words in sentence values per dog colour
     length_values_colours = []
     for dog in dogs:
@@ -142,22 +136,58 @@ def main():
     number_words = len(length_values_colours)
     average_of_words = sum(length_values_colours)/number_words
 
+    # Latest day
+    max_year = max(dog_years)
+    max_month =max([dog.date.month for dog in dogs if dog.date.year == max_year])
+    max_day = max([dog.date.day for dog in dogs if dog.date.year == max_year and dog.date.month == max_month])
+
+    # Earliest day
+    min_year = min(dog_years)
+    min_month = min([dog.date.month for dog in dogs if dog.date.year == min_year])
+    min_day = min([dog.date.day for dog in dogs if dog.date.year == min_year and dog.date.month == min_month])
+    # Most common names
+    most_common_names = Counter([dog.name for dog in dogs]).most_common()[:3]
+    # Most common colours
+    most_common_colours = Counter(split_colours).most_common()[:3]
+    # Most common breeds 
+    most_common_breeds = Counter(split_breeds).most_common()[:3]
+    '''
+    DISPLAY FINDINGS
+    '''
+
+    # Average attacks per year
+    print(f"The average attacks per year is: {round(attacks_per_year, 2)}")
+    # Average attacks per month
+    print(f"The average attacks per month is: {round(attacks_per_month, 2)}")
+    # Highest average attacks per month
+    print(f"The highest monthly average amount of dog attacks is in {month_num_to_str(month_counts.index(max(month_counts)))}, with an average of {round(max(month_counts)/12, 2)} attacks per year")
+    # Lowest average attacks per month
+    print(f"The lowest monthly average amount of dog attacks is in {month_num_to_str(month_counts.index(min(month_counts)))}, with an average of {round(min(month_counts)/12, 2)} attacks per year")
+    # Highest month of attacks ever
+    print(f"The highest amount of dog attacks in a single month is {month_threshold}, which occurred in {month_num_to_str(highest_months[0][1])} {highest_months[0][0]}") # Did not want to both making this scalable because they aren't tied anyway
+    # Highest year of attacks
+    print(f"The highest amount of dog attacks in a single year is {year_threshold}, which was in {h_years_str}")
+    # Most common occurrences
+    print(f"The top three most common names for dogs with the Dangerous Dog classification are {format_top_three(most_common_names)}")
+    print(f"The top three most common colours for dogs with the Dangerous Dog classification are {format_top_three(most_common_colours)}")
+    print(f"The top three most common breeds for dogs with the Dangerous Dog classification are {format_top_three(most_common_breeds)}")
+
+    # Min maxes
+    max_min_date(dog_months, "day")
+    max_min_date(dog_months, "month")
+    max_min_date(dog_years, "year")
+    
+    # First ever attack date  
+    first_date(min_year, min_month, min_day)
+    
+    # Latest attack date
+    latest_date(max_year, max_month, max_day)
+    
+    # Amount of colour words and average 
     print(f"There are {number_words} total words in all dog's colour value's, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
+    # Overall most common words
+    print(f"The top ten most common words and the amount they're repeated in this file are: {top_words_formatted}")
 
-    #Top Ten most common words
-    top_ten_words = [dog.name for dog in dogs] + [dog.colours for dog in dogs] + [dog.ward_name for dog in dogs] + [dog.ward_name for dog in dogs]
-    top_words_counter = Counter(top_ten_words)
-    print(f"The top ten most common words and the amount they're repeated in this file are: {str(top_words_counter)[9:256]}")
-    # print(top_words_counter)
-    #print(words)
-
-    
-        #counter_numbers = Counter(dog.date.year)
-        #print(counter_numbers)
-    #print(f"Item count: [counter_words]")
-
-    
-    pass
 main()
 
 
