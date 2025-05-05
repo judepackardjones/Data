@@ -28,7 +28,7 @@ def max_min_date(when,string):
     print(f"The maximum {string} where an attack occurred is {max(when)}, and the minimum is {min(when)}")
     
 def latest_date(year,month,day):
-    print(f"The latest day where a dog attack occurred was on {max(year)}/{max(month)}/{max(day)}")
+    print(f"The most recent day where a dog attack occurred was on {max(year)}/{max(month)}/{max(day)}")
 
 def first_date(year,month,day):
     print(f"The first day where a dog attack occurred was on {min(year)}/{min(month)}/{min(day)}")
@@ -88,29 +88,17 @@ def main():
     attacks_per_month = attacks_per_year / 12
 
     # Highest month/months of attacks
-    highest_month = 0
-    year_months = [] # We are using a list because we don't know if there will be a tie. Even though there is not a tie, we will keep this. 
-    years = list(dict.fromkeys(dog.date.year for dog in dogs))
-    for year in years:
-        for month in range(1, 13):
-            count = len([0 for dog in dogs if dog.date.month == month and dog.date.year == year]) # We don't care whats appended to the list because we're just counting the length
-            if count > highest_month:
-                highest_month = count
-                year_months.clear()
-                year_months.append((year, month))
-            elif count == highest_month:
-                year_months.append((year, month))
+    
+    month_counter = Counter([(dog.date.year, dog.date.month) for dog in dogs]).most_common()
+    print(month_counter)
+    month_threshold = month_counter[0][1]
+    highest_months = [x[0] for x in month_counter if x[1] == month_threshold]
+
+
     # Highest year/years of attacks
-    highest_year = 0
-    highest_years = []
-    for year in years:
-        count = len([0 for dog in dogs if dog.date.year == year])
-        if count > highest_year:
-            highest_year = count
-            highest_years.clear()
-            highest_years.append(str(year))
-        elif count == highest_year:
-            highest_years.append(str(year))
+    year_counter = Counter([dog.date.year for dog in dogs]).most_common()
+    year_threshold = year_counter[0][1]
+    highest_years = [str(x[0]) for x in year_counter if x[1] == year_threshold]
     h_years_str = " and ".join(highest_years)
 
     # Month distributions
@@ -124,9 +112,9 @@ def main():
     # Average attacks per month
     print(f"The average attacks per month is: {round(attacks_per_month, 2)}")
     # Highest month of attacks ever
-    print(f"The highest amount of dog attacks in a single month is {highest_month}, which occurred in {month_num_to_str(year_months[0][1])} {year_months[0][0]}") # Did not want to both making this scalable because they aren't tied anyway
+    print(f"The highest amount of dog attacks in a single month is {month_threshold}, which occurred in {month_num_to_str(highest_months[0][1])} {highest_months[0][0]}") # Did not want to both making this scalable because they aren't tied anyway
     # Highest year of attacks
-    print(f"The highest amount of dog attacks in a single year is {highest_year}, which was in {h_years_str}")
+    print(f"The highest amount of dog attacks in a single year is {year_threshold}, which was in {h_years_str}")
     # Highest average attacks per month
     print(f"The highest monthly average amount of dog attacks is in {month_num_to_str(month_counts.index(max(month_counts)))}, with an average of {round(max(month_counts)/12, 2)} attacks per year")
     # Lowest average attacks per month
@@ -148,17 +136,18 @@ def main():
     # Total and average length of words in sentence values per dog colour
     length_values_colours = []
     for dog in dogs:
-        word_count = len(dog.colours.split())
+        word_count = len(dog.colours.split("/"))
         length_values_colours.append(word_count)
-        number_words = len(length_values_colours)
-        average_of_words = sum(length_values_colours)/number_words
+        
+    number_words = len(length_values_colours)
+    average_of_words = sum(length_values_colours)/number_words
 
-    print(f"There are {number_words} total words in the dog's colour value, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
+    print(f"There are {number_words} total words in all dog's colour value's, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
 
     #Top Ten most common words
-    top_ten_words = list(dog.name for dog in dogs) + list(dog.colours for dog in dogs) + list(dog.ward_name for dog in dogs) + list(dog.ward_name for dog in dogs)
+    top_ten_words = [dog.name for dog in dogs] + [dog.colours for dog in dogs] + [dog.ward_name for dog in dogs] + [dog.ward_name for dog in dogs]
     top_words_counter = Counter(top_ten_words)
-    print(top_words_counter)
+    # print(top_words_counter)
     #print(words)
 
     
