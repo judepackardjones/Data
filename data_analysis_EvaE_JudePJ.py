@@ -147,6 +147,7 @@ def main():
     #Top Ten most common words
     top_ten_words = [dog.name for dog in dogs] + [dog.colours for dog in dogs] + [dog.ward_name for dog in dogs] + [dog.ward_name for dog in dogs]
     top_words_counter = Counter(top_ten_words)
+    print(f"The top ten most common words and the amount they're repeated in this file are: {str(top_words_counter)[9:256]}")
     # print(top_words_counter)
     #print(words)
 
