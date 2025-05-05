@@ -1,4 +1,5 @@
 from csv import reader
+from collections import Counter
 
 '''
 CLASS DEFINITIONS
@@ -23,15 +24,32 @@ UTILITY FUNCTIONS
 def month_num_to_str(num):
     return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][num]
 
-def max_min_date(l,string):
-    print(f"The maximum {string} where an attack occurred is {max(l)}, and the minimum is {min(l)}")
+def max_min_date(when,string):
+    print(f"The maximum {string} where an attack occurred is {max(when)}, and the minimum is {min(when)}")
+    
+def latest_date(year,month,day):
+    print(f"The latest day where a dog attack occurred was on {max(year)}/{max(month)}/{max(day)}")
 
+def first_date(year,month,day):
+    print(f"The first day where a dog attack occurred was on {min(year)}/{min(month)}/{min(day)}")
+    
+#<<<<<<< HEAD
+
+
+
+
+
+
+
+
+#=======
+#>>>>>>> 0285ca986a9fd97b921808ed9a9f74df7cdc5865
 '''
 EXAMPLES
 '''
 
 # # Accessing general info
-# for dog in dogs:
+#for dog in dogs:
 #     print(dog.name) # Get all dog's names
 #     print(dog.date.day) # Gets all dog's days of attack
 
@@ -45,6 +63,11 @@ EXAMPLES
 
 # Counting occurrences of specific value
 # print(len([dog for dog in dogs if dog.name.lower() == "zeus"])) # 6 dogs are named zeus
+
+#     for dog in dogs:
+#         word_length = len(dog.colours)
+#         answer.append(word_length)
+#         word_count = len(dog.colours.split())
 def main():
     '''
     EXTRACTION
@@ -111,7 +134,39 @@ def main():
 
     # Min maxes
     max_min_date([dog.date.day for dog in dogs], "day")
+    max_min_date([dog.date.month for dog in dogs], "month")
+    max_min_date([dog.date.year for dog in dogs], "year")
 
+    # First ever attack date  
+    first_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2017],
+            [dog.date.day for dog in dogs if dog.date.month == 2 and dog.date.year == 2017])
+    
+    # Latest attack date
+    latest_date([dog.date.year for dog in dogs], [dog.date.month for dog in dogs if dog.date.year == 2025],
+        [dog.date.day for dog in dogs if dog.date.month==3 and dog.date.year == 2025])
+    
+    # Total and average length of words in sentence values per dog colour
+    length_values_colours = []
+    for dog in dogs:
+        word_count = len(dog.colours.split())
+        length_values_colours.append(word_count)
+        number_words = len(length_values_colours)
+        average_of_words = sum(length_values_colours)/number_words
+
+    print(f"There are {number_words} total words in the dog's colour value, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
+
+    #Top Ten most common words
+    top_ten_words = list(dog.name for dog in dogs) + list(dog.colours for dog in dogs) + list(dog.ward_name for dog in dogs) + list(dog.ward_name for dog in dogs)
+    top_words_counter = Counter(top_ten_words)
+    print(top_words_counter)
+    #print(words)
+
+    
+        #counter_numbers = Counter(dog.date.year)
+        #print(counter_numbers)
+    #print(f"Item count: [counter_words]")
+
+    
     pass
 main()
 
