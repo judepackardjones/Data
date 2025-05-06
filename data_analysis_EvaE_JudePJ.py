@@ -63,7 +63,7 @@ def split_values(value_list, s_char): # Splits a value like BROWN / TAN into ["B
 
 #=======
 #>>>>>>> 0285ca986a9fd97b921808ed9a9f74df7cdc5865 
-# I hope that isn't a private key
+# I hope that isn't a private key, my git is public
 
 def main():
     '''
