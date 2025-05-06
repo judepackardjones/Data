@@ -50,7 +50,7 @@ def split_values(value_list, s_char):
             split_values.append(value.strip())
     return split_values
 
-
+# Idk what this is 
 #<<<<<<< HEAD
 
 
@@ -173,7 +173,7 @@ def main():
     print(f"The top three most common breeds for dogs with the Dangerous Dog classification are {format_top_three(most_common_breeds)}")
 
     # Min maxes
-    max_min_date(dog_months, "day")
+    max_min_date([dog.date.day for dog in dogs], "day")
     max_min_date(dog_months, "month")
     max_min_date(dog_years, "year")
     
@@ -184,7 +184,7 @@ def main():
     latest_date(max_year, max_month, max_day)
     
     # Amount of colour words and average 
-    print(f"There are {number_words} total words in all dog's colour value's, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
+    print(f"There are {number_words} total words in all dog's colour values, and the average amount of words per dog colour value is {round(average_of_words, 2)}")
     # Overall most common words
     print(f"The top ten most common words and the amount they're repeated in this file are: {top_words_formatted}")
 
